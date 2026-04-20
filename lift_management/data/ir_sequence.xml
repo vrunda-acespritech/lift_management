@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="seq_project_lift_serial" model="ir.sequence">
+            <field name="name">Lift Serial Number</field>
+            <field name="code">project.lift.serial</field>
+            <field name="prefix">LIFT-</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/><!-- shared across companies -->
+        </record>
+
+    </data>
+</odoo>

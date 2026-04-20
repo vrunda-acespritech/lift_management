@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Lift company -->
+        <record id="attr_lift_company" model="product.attribute">
+            <field name="name">Lift Company</field>
+             <field name="display_type">select</field>
+        </record>
+
+        <record id="attr_val_kone" model="product.attribute.value">
+            <field name="name">Kone</field>
+            <field name="attribute_id" ref="attr_lift_company"/>
+            <field name="default_extra_price">5000</field>
+        </record>
+
+        <record id="attr_val_trio" model="product.attribute.value">
+            <field name="name">Trio</field>
+            <field name="attribute_id" ref="attr_lift_company"/>
+            <field name="default_extra_price">10000</field>
+        </record>
+
+        <record id="attr_val_xway" model="product.attribute.value">
+            <field name="name">Xway</field>
+            <field name="attribute_id" ref="attr_lift_company"/>
+            <field name="default_extra_price">12000</field>
+        </record>
+
+        <record id="attr_val_omega" model="product.attribute.value">
+            <field name="name">Omega</field>
+            <field name="attribute_id" ref="attr_lift_company"/>
+            <field name="default_extra_price">16000</field>
+        </record>
+
+        <record id="attr_val_axis" model="product.attribute.value">
+            <field name="name">Axis</field>
+            <field name="attribute_id" ref="attr_lift_company"/>
+            <field name="default_extra_price">14000</field>
+        </record>
+
+        <!-- Lift Type -->
+        <record id="attr_lift_type" model="product.attribute">
+            <field name="name">Lift Type</field>
+             <field name="display_type">select</field>
+        </record>
+
+        <record id="attr_val_passenger" model="product.attribute.value">
+            <field name="name">Passenger</field>
+            <field name="attribute_id" ref="attr_lift_type"/>
+            <field name="default_extra_price">5000</field>
+        </record>
+
+        <record id="attr_val_goods" model="product.attribute.value">
+            <field name="name">Goods</field>
+            <field name="attribute_id" ref="attr_lift_type"/>
+            <field name="default_extra_price">1000</field>
+
+        </record>
+
+        <record id="attr_val_hospital" model="product.attribute.value">
+            <field name="name">Hospital</field>
+            <field name="attribute_id" ref="attr_lift_type"/>
+            <field name="default_extra_price">1500</field>
+
+        </record>
+
+        <!-- Capacity -->
+        <record id="attr_capacity" model="product.attribute">
+            <field name="name">Capacity</field>
+             <field name="display_type">select</field>
+        </record>
+
+        <record id="attr_val_4p" model="product.attribute.value">
+            <field name="name">4 Person</field>
+            <field name="attribute_id" ref="attr_capacity"/>
+            <field name="default_extra_price">120</field>
+        </record>
+
+        <record id="attr_val_6p" model="product.attribute.value">
+            <field name="name">6 Person</field>
+            <field name="attribute_id" ref="attr_capacity"/>
+            <field name="default_extra_price">150</field>
+        </record>
+
+        <record id="attr_val_8p" model="product.attribute.value">
+            <field name="name">8 Person</field>
+            <field name="attribute_id" ref="attr_capacity"/>
+            <field name="default_extra_price">210</field>
+        </record>
+
+        <!-- Floors -->
+        <record id="attr_floors" model="product.attribute">
+            <field name="name">Number of Floors</field>
+            <field name="display_type">select</field>
+        </record>
+
+        <record id="attr_val_floors_2" model="product.attribute.value">
+            <field name="name">2 Floors</field>
+            <field name="attribute_id" ref="attr_floors"/>
+            <field name="default_extra_price">20</field>
+        </record>
+
+        <record id="attr_val_floors_4" model="product.attribute.value">
+            <field name="name">4 Floors</field>
+            <field name="attribute_id" ref="attr_floors"/>
+            <field name="default_extra_price">50</field>
+        </record>
+
+        <record id="attr_val_floors_6" model="product.attribute.value">
+            <field name="name">6 Floors</field>
+            <field name="attribute_id" ref="attr_floors"/>
+            <field name="default_extra_price">70</field>
+        </record>
+
+        <record id="attr_val_floors_8" model="product.attribute.value">
+            <field name="name">8 Floors</field>
+            <field name="attribute_id" ref="attr_floors"/>
+            <field name="default_extra_price">90</field>
+        </record>
+
+        <record id="attr_val_floors_10" model="product.attribute.value">
+            <field name="name">10 Floors</field>
+            <field name="attribute_id" ref="attr_floors"/>
+            <field name="default_extra_price">110</field>
+        </record>
+
+        <record id="product_lift_costing_total" model="product.template">
+            <field name="name">Lift Installation</field>
+            <field name="default_code">LIFT-COST-TOTAL</field>
+            <field name="type">service</field>
+            <field name="invoice_policy">order</field>
+            <field name="sale_ok" eval="True"/>
+            <field name="purchase_ok" eval="False"/>
+        </record>
+
+        <!-- MAIN PRODUCT -->
+        <record id="product_lift_installation" model="product.template">
+            <field name="name">Lift Installation</field>
+            <field name="type">service</field>
+            <field name="service_tracking">task_in_project</field>
+            <field name="list_price">17000</field>
+            <field name="standard_price">13000</field>
+            <field name="project_template_id" ref="project_lift_installation_2"/>
+            <field name="attribute_line_ids" eval="[
+                Command.create({
+                    'attribute_id': ref('attr_lift_type'),
+                    'value_ids': [
+                        Command.set([
+                            ref('attr_val_passenger'),
+                            ref('attr_val_goods'),
+                            ref('attr_val_hospital'),
+                        ]),
+                    ],
+                }),
+                Command.create({
+                    'attribute_id': ref('attr_capacity'),
+                    'value_ids': [
+                        Command.set([
+                            ref('attr_val_4p'),
+                            ref('attr_val_6p'),
+                            ref('attr_val_8p'),
+                        ]),
+                    ],
+                }),
+                Command.create({
+                    'attribute_id': ref('attr_floors'),
+                    'value_ids': [
+                        Command.set([
+                            ref('attr_val_floors_2'),
+                            ref('attr_val_floors_4'),
+                            ref('attr_val_floors_6'),
+                            ref('attr_val_floors_8'),
+                            ref('attr_val_floors_10'),
+                        ]),
+                    ],
+                }),
+
+                Command.create({
+                    'attribute_id': ref('attr_lift_company'),
+                    'value_ids': [
+                        Command.set([
+                            ref('attr_val_kone'),
+                            ref('attr_val_trio'),
+                            ref('attr_val_xway'),
+                            ref('attr_val_omega'),
+                            ref('attr_val_axis'),
+                        ]),
+                    ],
+                }),
+            ]"/>
+        </record>
+
+        <!-- COST COMPONENTS -->
+
+        <record id="product_lift_equipment" model="product.template">
+            <field name="name">Lift Equipment</field>
+            <field name="type">consu</field>
+            <field name="list_price">600000</field>
+            <field name="standard_price">500000</field>
+        </record>
+
+        <record id="product_freight" model="product.template">
+            <field name="name">Freight</field>
+            <field name="type">service</field>
+            <field name="service_tracking">no</field>
+            <field name="list_price">25000</field>
+            <field name="standard_price">15000</field>
+        </record>
+
+        <record id="product_customs" model="product.template">
+            <field name="name">Customs</field>
+            <field name="type">service</field>
+            <field name="service_tracking">no</field>
+            <field name="list_price">11000</field>
+            <field name="standard_price">8000</field>
+        </record>
+
+        <record id="product_labour" model="product.template">
+            <field name="name">Installation Labour</field>
+            <field name="type">service</field>
+            <field name="service_tracking">no</field>
+            <field name="list_price">30000</field>
+            <field name="standard_price">25000</field>
+        </record>
+
+        <record id="product_site_material" model="product.template">
+            <field name="name">Site Material</field>
+            <field name="type">consu</field>
+            <field name="list_price">17000</field>
+            <field name="standard_price">12000</field>
+        </record>
+
+        <record id="product_overheads" model="product.template">
+            <field name="name">Overheads</field>
+            <field name="type">service</field>
+            <field name="service_tracking">no</field>
+            <field name="list_price">9000</field>
+            <field name="standard_price">5000</field>
+        </record>
+
+        <record id="pricelist_lift_default" model="product.pricelist">
+            <field name="name">Lift Default Pricelist</field>
+            <field name="currency_id" ref="base.USD"/>
+        </record>
+
+        <record id="pricelist_item_freight_default" model="product.pricelist.item">
+            <field name="pricelist_id" ref="pricelist_lift_default"/>
+            <field name="compute_price">percentage</field>
+            <field name="percent_price">22</field>
+            <field name="applied_on">1_product</field>
+            <field name="product_tmpl_id" ref="product_freight"/>
+            <field name="min_quantity">4</field>
+        </record>
+    </data>
+</odoo>

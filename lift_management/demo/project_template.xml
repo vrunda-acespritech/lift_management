@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data noupdate="1">
+
+        <!-- ===================== -->
+        <!-- TEMPLATE 1: Hospital -->
+        <!-- ===================== -->
+        <record id="project_lift_installation_1" model="project.project">
+            <field name="name">Hospital Lift Installation</field>
+            <field name="user_id" ref="base.user_admin"/>
+
+            <!-- REQUIRED -->
+            <field name="is_template">True</field>
+            <field name="allow_billable">True</field>
+            <field name="allow_timesheets">True</field>
+            <field name="is_fsm">True</field>
+
+            <field name="description">Installation of stretcher lift.</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="privacy_visibility">employees</field>
+            <field name="stage_id" ref="project.project_project_stage_2"/>
+        </record>
+
+        <record id="t1_task_1" model="project.task">
+            <field name="name">Medical Compliance Check</field>
+            <field name="project_id" ref="project_lift_installation_1"/>
+        </record>
+        <record id="t1_task_2" model="project.task">
+            <field name="name">Wide Cabin Installation</field>
+            <field name="project_id" ref="project_lift_installation_1"/>
+        </record>
+        <record id="t1_task_3" model="project.task">
+            <field name="name">Emergency System Setup</field>
+            <field name="project_id" ref="project_lift_installation_1"/>
+        </record>
+        <record id="t1_task_4" model="project.task">
+            <field name="name">Backup Power Integration</field>
+            <field name="project_id" ref="project_lift_installation_1"/>
+        </record>
+        <record id="t1_task_5" model="project.task">
+            <field name="name">Safety Certification</field>
+            <field name="project_id" ref="project_lift_installation_1"/>
+        </record>
+
+
+        <!-- ===================== -->
+        <!-- TEMPLATE 2: Residential -->
+        <!-- ===================== -->
+        <record id="project_lift_installation_2" model="project.project">
+            <field name="name">Residential Lift Setup</field>
+            <field name="user_id" ref="base.user_admin"/>
+
+            <!-- REQUIRED -->
+            <field name="is_template">True</field>
+            <field name="allow_billable">True</field>
+            <field name="allow_timesheets">True</field>
+            <field name="is_fsm">True</field>
+
+            <field name="description">Lift installation for villa.</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="privacy_visibility">employees</field>
+            <field name="stage_id" ref="project.project_project_stage_2"/>
+        </record>
+
+        <record id="t2_task_1" model="project.task">
+            <field name="name">Customer Requirement Analysis</field>
+            <field name="project_id" ref="project_lift_installation_2"/>
+        </record>
+        <record id="t2_task_2" model="project.task">
+            <field name="name">Compact Shaft Design</field>
+            <field name="project_id" ref="project_lift_installation_2"/>
+        </record>
+        <record id="t2_task_3" model="project.task">
+            <field name="name">Noise Reduction Setup</field>
+            <field name="project_id" ref="project_lift_installation_2"/>
+        </record>
+        <record id="t2_task_4" model="project.task">
+            <field name="name">Interior Finishing</field>
+            <field name="project_id" ref="project_lift_installation_2"/>
+        </record>
+        <record id="t2_task_5" model="project.task">
+            <field name="name">Customer Handover</field>
+            <field name="project_id" ref="project_lift_installation_2"/>
+        </record>
+
+    </data>
+</odoo>

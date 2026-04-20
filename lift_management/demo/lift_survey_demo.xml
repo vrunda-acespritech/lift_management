@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- =========================
+             SURVEY: SITE VISIT
+        ========================= -->
+        <record id="survey_lift_site_visit" model="survey.survey">
+            <field name="title">Lift Site Visit Inspection</field>
+            <field name="access_mode">public</field>
+            <field name="questions_layout">page_per_section</field>
+        </record>
+
+        <!-- =========================
+             SECTION 1: GENERAL INFO
+        ========================= -->
+        <record id="survey_page_general" model="survey.question">
+            <field name="title">General Information</field>
+            <field name="survey_id" ref="survey_lift_site_visit"/>
+            <field name="is_page">True</field>
+            <field name="sequence">1</field>
+        </record>
+
+        <record id="q_number_of_floors" model="survey.question">
+            <field name="title">Number of Floors</field>
+            <field name="survey_id" ref="survey_lift_site_visit"/>
+            <field name="question_type">numerical_box</field>
+            <!-- <field name="is_required">True</field> -->
+            <field name="sequence">2</field>
+        </record>
+
+        <record id="q_lift_type" model="survey.question">
+            <field name="title">Lift Type</field>
+            <field name="survey_id" ref="survey_lift_site_visit"/>
+            <field name="question_type">simple_choice</field>
+            <field name="sequence">3</field>
+        </record>
+
+        <record id="q_lift_type_passenger" model="survey.question.answer">
+            <field name="value">Passenger</field>
+            <field name="question_id" ref="q_lift_type"/>
+        </record>
+
+        <record id="q_lift_type_goods" model="survey.question.answer">
+            <field name="value">Goods</field>
+            <field name="question_id" ref="q_lift_type"/>
+        </record>
+
+        <record id="q_lift_type_hospital" model="survey.question.answer">
+            <field name="value">Hospital</field>
+            <field name="question_id" ref="q_lift_type"/>
+        </record>
+
+        <!-- =========================
+             SECTION 2: TECHNICAL
+        ========================= -->
+        <record id="survey_page_technical" model="survey.question">
+            <field name="title">Technical Details</field>
+            <field name="survey_id" ref="survey_lift_site_visit"/>
+            <field name="is_page">True</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <record id="q_shaft_size" model="survey.question">
+            <field name="title">Shaft Size (W x D)</field>
+            <field name="survey_id" ref="survey_lift_site_visit"/>
+            <field name="question_type">char_box</field>
+            <field name="sequence">11</field>
+        </record>
+
+        <record id="q_pit_depth" model="survey.question">
+            <field name="title">Pit Depth (mm)</field>
+            <field name="survey_id" ref="survey_lift_site_visit"/>
+            <field name="question_type">numerical_box</field>
+            <field name="sequence">12</field>
+        </record>
+
+        <record id="q_headroom" model="survey.question">
+            <field name="title">Headroom (mm)</field>
+            <field name="survey_id" ref="survey_lift_site_visit"/>
+            <field name="question_type">numerical_box</field>
+            <field name="sequence">13</field>
+        </record>
+
+        <!-- =========================
+             SECTION 3: SITE CONDITIONS
+        ========================= -->
+        <record id="survey_page_site" model="survey.question">
+            <field name="title">Site Conditions</field>
+            <field name="survey_id" ref="survey_lift_site_visit"/>
+            <field name="is_page">True</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <record id="q_power_available" model="survey.question">
+            <field name="title">Is Power Available?</field>
+            <field name="survey_id" ref="survey_lift_site_visit"/>
+            <field name="question_type">simple_choice</field>
+            <field name="sequence">21</field>
+        </record>
+
+        <record id="q_power_yes" model="survey.question.answer">
+            <field name="value">Yes</field>
+            <field name="question_id" ref="q_power_available"/>
+        </record>
+
+        <record id="q_power_no" model="survey.question.answer">
+            <field name="value">No</field>
+            <field name="question_id" ref="q_power_available"/>
+        </record>
+
+        <record id="q_remarks" model="survey.question">
+            <field name="title">Remarks</field>
+            <field name="survey_id" ref="survey_lift_site_visit"/>
+            <field name="question_type">text_box</field>
+            <field name="sequence">22</field>
+        </record>
+
+    </data>
+</odoo>

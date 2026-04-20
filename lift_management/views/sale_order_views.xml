@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_sale_order_lift_inherit" model="ir.ui.view">
+        <field name="name">sale.order.form.lift.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Smart buttons -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+
+                <!-- Costing Sheet: always visible, creates on first click -->
+                <button name="action_open_costing_sheet"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-calculator"
+                        groups="lift_management.group_lift_manager">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text" invisible="lift_costing_count == 0">Costing Sheet</span>
+                        <span class="o_stat_text" invisible="lift_costing_count != 0">Add Costing</span>
+                    </div>
+                </button>
+
+                <!-- Lift Asset: only shown after installation is done -->
+                <button name="action_view_lift_asset"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-building"
+                        string="Lift Asset"
+                        invisible="lift_asset_count == 0"/>
+
+            </xpath>
+
+            <!-- Expected delivery date below order date -->
+            <xpath expr="//group/field[@name='date_order']" position="after">
+                <field name="delivery_time"/>
+            </xpath>
+
+            <!-- Hidden relational fields needed for computes -->
+            <xpath expr="//sheet" position="inside">
+                <field name="lift_costing_id" invisible="1"/>
+                <field name="lift_costing_count" invisible="1"/>
+                <field name="lift_asset_count" invisible="1"/>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

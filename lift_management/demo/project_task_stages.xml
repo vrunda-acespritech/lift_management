@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+    <!--To Do Stage -->
+    <record id="stage_task_todo" model="project.task.type">
+        <field name="name">To Do</field>
+        <field name="sequence">1</field>
+    </record>
+
+    <!--In Progress -->
+    <record id="stage_task_in_progress" model="project.task.type">
+        <field name="name">In Progress</field>
+        <field name="sequence">10</field>
+    </record>
+
+    <!-- Done -->
+    <record id="stage_task_done" model="project.task.type">
+        <field name="name">Done</field>
+        <field name="sequence">20</field>
+        <field name="fold">1</field>
+    </record>
+    </data>
+</odoo>

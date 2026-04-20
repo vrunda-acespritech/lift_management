@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_maintenance_request_lift_inherit" model="ir.ui.view">
+        <field name="name">maintenance.request.form.lift.inherit</field>
+        <field name="model">maintenance.request</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_request_view_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Add lift_asset_id field near the top of the form -->
+            <xpath expr="//field[@name='equipment_id']" position="before">
+                <field name="lift_asset_id" options="{'no_create': True}"/>
+            </xpath>
+
+            <!-- Single smart button: creates task on first click, opens it after -->
+            <xpath expr="//header" position="inside">
+                <button name="action_create_or_view_fsm_task"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-tasks"
+                        string="Field Task"/>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

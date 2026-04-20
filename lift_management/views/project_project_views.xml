@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Extend the project form with a dedicated Lift Info tab -->
+    <record id="project_lift_form_inherit" model="ir.ui.view">
+        <field name="name">project.project.form.lift.inherit</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//page[@name='settings']" position="after">
+                <page string="Lift Info" name="lift_info">
+                    <group>
+                        <group string="Identity">
+                            <field name="serial_number" readonly="1"/>
+                            <field name="lift_name"/>
+                            <field name="site_location" readonly="1"/>
+                            <field name="lift_type"/>
+                        </group>
+                        <group string="Technical Specifications">
+                            <field name="capacity"/>
+                            <field name="floors"/>
+                            <field name="speed" digits="[6,2]"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

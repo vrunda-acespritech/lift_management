@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── List view ─────────────────────────────────────────────────── -->
+    <record id="lift_asset_view_list" model="ir.ui.view">
+        <field name="name">lift.asset.view.list</field>
+        <field name="model">lift.asset</field>
+        <field name="arch" type="xml">
+            <list string="Lift Assets" decoration-danger="warranty_status == 'expired'"
+                  decoration-warning="warranty_status == 'expiring_soon'">
+                <field name="name"/>
+                <field name="serial_number"/>
+                <field name="customer_id"/>
+                <field name="site_location"/>
+                <field name="lift_type" optional="show"/>
+                <field name="installation_date" optional="show"/>
+                <field name="warranty_expiry"/>
+                <field name="warranty_status" widget="badge"
+                       decoration-success="warranty_status == 'valid'"
+                       decoration-warning="warranty_status == 'expiring_soon'"
+                       decoration-danger="warranty_status == 'expired'"/>
+                <field name="maintenance_request_count" string="MR" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ── Form view ─────────────────────────────────────────────────── -->
+    <record id="lift_asset_view_form" model="ir.ui.view">
+        <field name="name">lift.asset.view.form</field>
+        <field name="model">lift.asset</field>
+        <field name="arch" type="xml">
+            <form string="Lift Asset">
+                <header>
+                    <field name="warranty_status" widget="statusbar"
+                           statusbar_visible="valid,expiring_soon,expired"/>
+                </header>
+
+                <sheet>
+                    <!-- Stat buttons -->
+                    <div name="button_box" class="oe_button_box">
+                        <button name="action_view_sale_order"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-file-text-o"
+                                string="Sale Order"
+                                invisible="not sale_order_id"/>
+                        <button name="action_view_maintenance_requests"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-wrench">
+                            <field name="maintenance_request_count" widget="statinfo"
+                                   string="Maintenance"/>
+                        </button>
+                    </div>
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Lift Name…"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Basic Information">
+                            <field name="sale_order_id" options="{'no_create': True}"/>
+                            <field name="serial_number"/>
+                            <field name="customer_id" options="{'no_create': True}"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="site_location"/>
+                            <field name="project_id" options="{'no_create': True}"/>
+                        </group>
+                        <group string="Technical Specifications">
+                            <field name="lift_type"/>
+                            <field name="capacity"/>
+                            <field name="floors"/>
+                            <field name="speed" widget="float" digits="[6,2]"/>
+                        </group>
+                    </group>
+
+                    <group string="Warranty">
+                        <group>
+                            <field name="installation_date"/>
+                            <field name="warranty_expiry"/>
+                        </group>
+                    </group>
+                </sheet>
+
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── Search view ────────────────────────────────────────────────── -->
+    <record id="lift_asset_view_search" model="ir.ui.view">
+        <field name="name">lift.asset.view.search</field>
+        <field name="model">lift.asset</field>
+        <field name="arch" type="xml">
+            <search string="Search Lift Assets">
+                <field name="name"/>
+                <field name="serial_number"/>
+                <field name="customer_id"/>
+                <field name="site_location"/>
+                <filter string="Valid Warranty" name="valid"
+                        domain="[('warranty_status', '=', 'valid')]"/>
+                <filter string="Expiring Soon" name="expiring_soon"
+                        domain="[('warranty_status', '=', 'expiring_soon')]"/>
+                <filter string="Expired" name="expired"
+                        domain="[('warranty_status', '=', 'expired')]"/>
+                <group>
+                    <filter string="Customer" name="group_customer"
+                            context="{'group_by': 'customer_id'}"/>
+                    <filter string="Warranty Status" name="group_warranty"
+                            context="{'group_by': 'warranty_status'}"/>
+                    <filter string="Lift Type" name="group_type"
+                            context="{'group_by': 'lift_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ── Window action ─────────────────────────────────────────────── -->
+    <record id="lift_asset_action" model="ir.actions.act_window">
+        <field name="name">Lift Assets</field>
+        <field name="res_model">lift.asset</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="lift_asset_view_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No lift assets yet.
+            </p>
+            <p>
+                Lift assets are created automatically when an installation
+                project is marked as Done.
+            </p>
+        </field>
+    </record>
+
+</odoo>

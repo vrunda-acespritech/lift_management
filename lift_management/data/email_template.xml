@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="email_template_warranty_reminder" model="mail.template">
+            <field name="name">Lift: Warranty Expiry Reminder</field>
+            <field name="model_id" ref="lift_management.model_lift_asset"/>
+            <field name="subject">Warranty Expiry Reminder – {{ object.name }}</field>
+            <field name="email_from">{{ (object.company_id.email or user.email) | safe }}</field>
+            <field name="email_to">{{ object.customer_id.email | safe }}</field>
+            <field name="lang">{{ object.customer_id.lang }}</field>
+            <field name="auto_delete" eval="False"/>
+            <field name="body_html" type="html">
+                <div style="font-family: Arial, sans-serif; font-size: 14px; color: #333;">
+                    <p>Dear <t t-out="object.customer_id.name"/>,</p>
+
+                    <p>
+                        This is a reminder that the warranty for your lift
+                        <strong><t t-out="object.name"/></strong>
+                        (Serial: <t t-out="object.serial_number"/>)
+                        installed at <em><t t-out="object.site_location or 'your site'"/></em>
+                        will expire on
+                        <strong><t t-out="object.warranty_expiry"/></strong>.
+                    </p>
+
+                    <p>
+                        To avoid any service interruption, please contact us to
+                        renew your maintenance contract before the expiry date.
+                    </p>
+
+                    <p>Kind regards,<br/><t t-out="object.company_id.name"/></p>
+                </div>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Root menu -->
+    <menuitem id="menu_lift_management_root"
+              name="Lift Management"
+              sequence="10"
+              web_icon="lift_management,static/description/icon.png"/>
+
+    <!-- Lift Assets -->
+    <menuitem id="menu_lift_asset"
+              name="Lift Assets"
+              parent="menu_lift_management_root"
+              action="lift_asset_action"
+              sequence="10"/>
+
+    <!-- Costing -->
+    <menuitem id="menu_lift_costing"
+              name="Costing Sheets"
+              parent="menu_lift_management_root"
+              action="lift_costing_action"
+              sequence="20"
+              groups="lift_management.group_lift_manager"/>
+
+</odoo>

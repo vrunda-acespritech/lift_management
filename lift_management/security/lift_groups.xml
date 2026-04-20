@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Module category -->
+    <record id="module_category_lift_management" model="ir.module.category">
+        <field name="name">Lift Management</field>
+        <field name="sequence">5</field>
+    </record>
+
+    <!-- Privilege (Odoo 17+ groups framework) -->
+    <record id="privilege_lift_role" model="res.groups.privilege">
+        <field name="name">Role</field>
+        <field name="category_id" ref="module_category_lift_management"/>
+    </record>
+
+    <!-- Engineer: can view and update lift records -->
+    <record id="group_lift_engineer" model="res.groups">
+        <field name="name">Engineer</field>
+        <field name="privilege_id" ref="privilege_lift_role"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <!-- Manager: all engineer rights + configuration access -->
+    <record id="group_lift_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="privilege_id" ref="privilege_lift_role"/>
+        <field name="implied_ids" eval="[(4, ref('group_lift_engineer'))]"/>
+    </record>
+
+</odoo>

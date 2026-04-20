@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Report action -->
+    <record id="action_report_lift_costing" model="ir.actions.report">
+        <field name="name">Lift Costing Sheet</field>
+        <field name="model">lift.costing</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">lift_management.report_lift_costing_document</field>
+        <field name="report_file">lift_management.report_lift_costing_document</field>
+        <field name="binding_model_id" ref="lift_management.model_lift_costing"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- QWeb template -->
+    <template id="report_lift_costing_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+
+                        <!-- Header -->
+                        <div class="row mb-4">
+                            <div class="col-8">
+                                <h2>Lift Installation — Cost Report</h2>
+                                <h4 t-out="doc.name"/>
+                            </div>
+                            <div class="col-4 text-end">
+                                <t t-if="doc.sale_order_id">
+                                    <strong>Sale Order:</strong>
+                                    <span t-out="doc.sale_order_id.name"/><br/>
+                                </t>
+                                <t t-if="doc.opportunity_id">
+                                    <strong>Opportunity:</strong>
+                                    <span t-out="doc.opportunity_id.name"/><br/>
+                                </t>
+                                <t t-if="doc.sale_order_id.partner_id">
+                                    <strong>Customer:</strong>
+                                    <span t-out="doc.sale_order_id.partner_id.name"/>
+                                </t>
+                            </div>
+                        </div>
+
+                        <!-- Product -->
+                        <t t-if="doc.product_id">
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <strong>Lift Product:</strong>
+                                    <span t-out="doc.product_id.display_name"/>
+                                </div>
+                            </div>
+                        </t>
+
+                        <!-- Cost breakdown table -->
+                        <table class="table table-bordered table-sm mt-3">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Cost Component</th>
+                                    <th class="text-end">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Supplier Cost</td>
+                                    <td class="text-end">
+                                        <span t-out="doc.supplier_cost"
+                                              t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Freight Cost</td>
+                                    <td class="text-end">
+                                        <span t-out="doc.freight_cost"
+                                              t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Customs / Duties</td>
+                                    <td class="text-end">
+                                        <span t-out="doc.customs_cost"
+                                              t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Installation Cost</td>
+                                    <td class="text-end">
+                                        <span t-out="doc.installation_cost"
+                                              t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Material Cost</td>
+                                    <td class="text-end">
+                                        <span t-out="doc.material_cost"
+                                              t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Overhead Cost</td>
+                                    <td class="text-end">
+                                        <span t-out="doc.overhead_cost"
+                                              t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <!-- Subtotal -->
+                                <tr class="table-secondary fw-bold">
+                                    <td>Total Cost</td>
+                                    <td class="text-end">
+                                        <span t-out="doc.total_cost"
+                                              t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <!-- Margin -->
+                                <tr>
+                                    <td>
+                                        Margin
+                                        (<span t-out="'%.2f' % doc.margin_percent"/>%)
+                                    </td>
+                                    <td class="text-end">
+                                        <span t-out="doc.sale_price - doc.total_cost"
+                                              t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <!-- Final sale price -->
+                                <tr class="table-dark fw-bold">
+                                    <td>Proposed Sale Price</td>
+                                    <td class="text-end">
+                                        <span t-out="doc.sale_price"
+                                              t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                        <!-- Footer note -->
+                        <div class="row mt-4">
+                            <div class="col-12 text-muted" style="font-size:11px;">
+                                This is an internal cost document. Not for customer distribution.
+                            </div>
+                        </div>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

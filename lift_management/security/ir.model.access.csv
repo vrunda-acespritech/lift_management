@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+lift_management.access_lift_asset_engineer,lift.asset engineer,lift_management.model_lift_asset,lift_management.group_lift_engineer,1,1,1,0
+lift_management.access_lift_asset_manager,lift.asset manager,lift_management.model_lift_asset,lift_management.group_lift_manager,1,1,1,1
+lift_management.access_lift_costing_engineer,lift.costing engineer,lift_management.model_lift_costing,lift_management.group_lift_engineer,1,1,1,0
+lift_management.access_lift_costing_manager,lift.costing manager,lift_management.model_lift_costing,lift_management.group_lift_manager,1,1,1,1
+lift_management.access_fsm_product_line_engineer,fsm.product.line engineer,lift_management.model_fsm_product_line,lift_management.group_lift_engineer,1,1,1,1
+lift_management.access_survey_user_input_lift,survey.user_input lift read,survey.model_survey_user_input,base.group_user,1,1,1,0

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_crm_lead_lift_inherit" model="ir.ui.view">
+        <field name="name">crm.lead.form.lift.inherit</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Add lift fields below tag_ids -->
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="project_type"/>
+                <field name="number_of_lifts"/>
+                <field name="site_location"/>
+                <field name="site_visit" widget="boolean_toggle"/>
+                <field name="survey_id"/>
+                <!-- Only show for service leads -->
+                <field name="lift_asset_id"
+                       invisible="project_type != 'service'"
+                       options="{'no_create': True}"/>
+            </xpath>
+
+            <!-- Smart buttons -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_all_submissions"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="oi-schedule-today"
+                        string="Surveys"/>
+            </xpath>
+
+            <!-- Header actions -->
+            <xpath expr="//header/field[@name='stage_id']" position="before">
+                <button name="action_open_survey"
+                        string="Start Survey"
+                        type="object"
+                        class="btn-primary"
+                        invisible="not site_visit or project_type != 'installation'"/>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

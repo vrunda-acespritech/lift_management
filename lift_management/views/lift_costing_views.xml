@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── List ──────────────────────────────────────────────────────── -->
+    <record id="lift_costing_view_list" model="ir.ui.view">
+        <field name="name">lift.costing.view.list</field>
+        <field name="model">lift.costing</field>
+        <field name="arch" type="xml">
+            <list string="Lift Costing Sheets">
+                <field name="name"/>
+                <field name="opportunity_id"/>
+                <field name="sale_order_id"/>
+                <field name="product_id"/>
+                <field name="total_cost" sum="Total Cost"/>
+                <field name="sale_price"  sum="Total Sale Price"/>
+                <field name="margin_percent" string="Margin %"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ── Form ──────────────────────────────────────────────────────── -->
+    <record id="lift_costing_view_form" model="ir.ui.view">
+        <field name="name">lift.costing.view.form</field>
+        <field name="model">lift.costing</field>
+        <field name="arch" type="xml">
+            <form string="Lift Costing Sheet">
+                <header>
+                    <!-- One-click: push the computed sale_price to the SO line -->
+                    <button name="action_apply_price_to_order"
+                            string="Apply Costing to Order"
+                            type="object"
+                            class="btn-primary"
+                            invisible="not sale_order_id"
+                            confirm="This will add total cost to order. Continue?"/>
+                    <button name="action_print_cost_report"
+                        string="Print Cost Report"
+                        type="object"
+                        class="btn-secondary"
+                        icon="fa-print"/>
+                </header>
+
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Costing Reference…"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="References">
+                            <field name="opportunity_id" options="{'no_create': True}"/>
+                            <field name="sale_order_id"  options="{'no_create': True}"/>
+                            <field name="product_id"     options="{'no_create': True}"/>
+                            <field name="currency_id"    options="{'no_create': True}"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Cost Breakdown" name="cost_breakdown">
+                            <group>
+                                <group string="Direct Costs">
+                                    <field name="supplier_cost"     widget="monetary"/>
+                                    <field name="freight_cost"      widget="monetary"/>
+                                    <field name="customs_cost"      widget="monetary"/>
+                                    <field name="installation_cost" widget="monetary"/>
+                                </group>
+                                <group string="Indirect Costs">
+                                    <field name="material_cost" widget="monetary"/>
+                                    <field name="overhead_cost" widget="monetary"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Pricing &amp; Summary" name="pricing">
+                            <group>
+                                <group string="Margin">
+                                    <field name="margin_percent" string="Margin (%)"/>
+                                </group>
+                                <group string="Computed Totals">
+                                    <field name="total_cost" widget="monetary" readonly="1"/>
+                                    <field name="sale_price" widget="monetary" readonly="1"
+                                           string="Proposed Sale Price"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── Action ────────────────────────────────────────────────────── -->
+    <record id="lift_costing_action" model="ir.actions.act_window">
+        <field name="name">Lift Costing</field>
+        <field name="res_model">lift.costing</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>
