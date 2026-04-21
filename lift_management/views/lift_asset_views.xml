@@ -31,6 +31,10 @@
         <field name="arch" type="xml">
             <form string="Lift Asset">
                 <header>
+                    <button name="action_create_sign_request"
+                        string="Sign Contract"
+                        type="object"
+                        class="btn-primary"/>
                     <field name="warranty_status" widget="statusbar"
                            statusbar_visible="valid,expiring_soon,expired"/>
                 </header>
@@ -38,6 +42,13 @@
                 <sheet>
                     <!-- Stat buttons -->
                     <div name="button_box" class="oe_button_box">
+                        <button name="action_view_sign_requests"
+                                type="object"
+                                string="Sign"
+                                class="oe_stat_button"
+                                icon="fa-pencil">
+                            <field name="sign_request_count" widget="statinfo"/>
+                        </button>
                         <button name="action_view_sale_order"
                                 type="object"
                                 class="oe_stat_button"

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="report_lift_contract_action01" model="ir.actions.report">
+            <field name="name">Lift Contract</field>
+            <field name="model">lift.asset</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">lift_management.report_lift_contract</field>
+            <field name="report_file">lift_management.report_lift_contract</field>
+        </record>
+
+    </data>
+</odoo>

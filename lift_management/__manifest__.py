@@ -27,7 +27,7 @@ Covers the full lifecycle:
         'maintenance',
         'stock',
         'mrp',
-        'survey',
+        'survey','sign',
     ],
     'data': [
         'demo/project_template.xml',
@@ -43,6 +43,8 @@ Covers the full lifecycle:
         'data/ir_sequence.xml',
         'data/email_template.xml',
         'data/cron.xml',
+        'data/lift_contract_template.xml',
+        'data/lift_contract_report.xml',
 
         # Views
         'views/lift_asset_views.xml',

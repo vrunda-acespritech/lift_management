@@ -5,6 +5,20 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
 
+import base64
+import io
+
+import uuid
+
+from reportlab.pdfgen import canvas
+
+from odoo.exceptions import UserError
+
+from reportlab.pdfgen import canvas
+
+from reportlab.lib.pagesizes import A4
+
+
 
 class LiftAsset(models.Model):
     """
@@ -204,3 +218,108 @@ class LiftAsset(models.Model):
                         'email_from': rec.company_id.email or self.env.user.email,
                     },
                 )
+
+
+    def action_create_sign_request(self):
+        self.ensure_one()
+
+        report = self.env.ref('lift_management.report_lift_contract_action01')
+        pdf_content, _ = report._render_qweb_pdf(report.id, [self.id])
+
+        attachment = self.env['ir.attachment'].create({
+            'name': f'{self.name}_Contract.pdf',
+            'type': 'binary',
+            'datas': base64.b64encode(pdf_content),
+            'res_model': self._name,
+            'res_id': self.id,
+            'mimetype': 'application/pdf',
+        })
+
+        doc = self.env['documents.document'].create({
+            'name': attachment.name,
+            'attachment_id': attachment.id,
+            'owner_id': self.env.user.id,
+        })
+
+        template = self.env['sign.template'].create({
+            'name': f'Contract - {self.name}',
+        })
+
+        sign_document = self.env['sign.document'].create({
+            'template_id': template.id,
+            'attachment_id': attachment.id,
+        })
+
+        role = self.env['sign.item.role'].search([('name', '=', 'Customer')], limit=1)
+        if not role:
+            role = self.env['sign.item.role'].create({'name': 'Customer'})
+
+        s_item = self.env['sign.item'].create({
+            'template_id': template.id,
+            'document_id': sign_document.id,
+            'type_id': self.env.ref('sign.sign_item_type_signature').id,
+            'required': True,
+            'responsible_id': role.id,
+            'page': 1,
+            'posX': 0.5,
+            'posY': 0.2,
+            'width': 0.3,
+            'height': 0.05,
+        })
+
+        sign_request = self.env['sign.request'].create({
+            'template_id': template.id,
+            'reference': f'Sign Request - {self.name}',
+            'lift_asset_id': self.id,
+            'request_item_ids': [(0, 0, {
+                'partner_id': self.customer_id.id,
+                'role_id': role.id,
+                
+            })]
+        })
+        def _default_access_token(self):
+            print(str(uuid.uuid4()))
+
+        res = {
+            'type': 'ir.actions.act_window',
+            'res_model': 'sign.request',
+            'view_mode': 'form',
+            'res_id': sign_request.id,
+            'target': 'current',
+        }
+        return res 
+        
+    sign_request_count = fields.Integer(
+            compute="_compute_sign_request_count",
+            string="Sign Requests")
+
+    def _compute_sign_request_count(self):
+                for rec in self:
+                    rec.sign_request_count = self.env['sign.request'].search_count([
+                        ('lift_asset_id', '=', rec.id)
+                    ])
+
+    def action_view_sign_requests(self):
+                self.ensure_one()
+                return {
+                    'type': 'ir.actions.act_window',
+                    'name': 'Sign Requests',
+                    'res_model': 'sign.request',
+                    'view_mode': 'list,form',
+                    'domain': [('lift_asset_id', '=', self.id)],
+                    'context': {
+                        'default_lift_asset_id': self.id
+                    }
+                }
+                
+        
+    class SignRequest(models.Model):
+        _inherit = 'sign.request'
+
+        lift_asset_id = fields.Many2one('lift.asset', string="Lift Asset")
+        
+            
+        def _prepare_request_values(self):
+            vals = super()._prepare_request_values()
+            vals['lift_asset_id'] = self.lift_asset_id.id
+            return vals

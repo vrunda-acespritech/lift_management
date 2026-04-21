@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_lift_contract">
+        <t t-call="web.external_layout">
+            <main>
+
+                <t t-foreach="docs" t-as="doc">
+                    <div class="page">
+                        <h2>Lift Contract</h2>
+                        
+                        <p><strong>Lift Name:</strong> <t t-esc="doc.name"/></p>
+                        <p><strong>Serial Number:</strong> <t t-esc="doc.serial_number"/></p>
+                        <p><strong>Customer:</strong> <t t-esc="doc.customer_id.name"/></p>
+                        <p><strong>Installation Date:</strong> <t t-esc="doc.installation_date"/></p>
+                        <p><strong>Warranty Expiry:</strong> <t t-esc="doc.warranty_expiry"/></p>
+                        
+                        <br/><br/>
+                        <p>Customer Signature:</p>
+                    </div>
+                </t>
+            </main>
+        </t>
+    </template>
+
+</odoo>
