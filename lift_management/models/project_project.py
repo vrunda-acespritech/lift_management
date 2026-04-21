@@ -26,7 +26,7 @@ class ProjectProject(models.Model):
         store=True,
         readonly=True,
     )
-    lift_name = fields.Char(string='Lift Name', compute='_compute_lift_name', store=True)
+    lift_name = fields.Char(string='Lift Name', compute='_compute_lift_attributes', store=True)
 
     # Technical specs — derived from product variant attributes on the sale line
     lift_type = fields.Char(
@@ -45,34 +45,36 @@ class ProjectProject(models.Model):
 
     # ── Computed ───────────────────────────────────────────────────────────────
 
-    @api.depends('sale_order_id.order_line.product_id')
-    def _compute_lift_name(self):
-        for rec in self:
-            main_line = rec.sale_order_id.order_line[:1]
-            rec.lift_name = main_line.product_id.name if main_line else False
+    # @api.depends('task_ids.sale_line_id.product_id')
+    # def _compute_lift_name(self):
+    #     for rec in self:
+    #         task = rec.task_ids[:1]
+    #         rec.lift_name = task.sale_line_id.product_id.name if task and task.sale_line_id else False
 
-    @api.depends('sale_order_id.order_line.product_id.product_template_variant_value_ids.name')
+    @api.depends('task_ids.sale_line_id.product_id')
     def _compute_lift_attributes(self):
-        attr_map = {
-            'Lift Type': 'lift_type',
-            'Capacity': 'capacity',
-            'Number of Floors': 'floors',
-            'Speed': 'speed',
-        }
         for rec in self:
-            attr_values = rec.sale_order_id.order_line.product_id.product_template_variant_value_ids
+            task = rec.task_ids[:1]
 
-            def _get(attr_name):
+            if not task or not task.sale_line_id:
+                rec.lift_name = ""
+                rec.floors = ""
+                rec.capacity = ""
+                rec.lift_type = ""
+                continue
+
+            product = task.sale_line_id.product_id
+            attr_values = product.product_template_variant_value_ids
+
+            def get_val(attr_name):
                 match = attr_values.filtered(lambda v: v.attribute_id.name == attr_name)
                 return match[0].name if match else False
 
-            rec.lift_type = _get('Lift Type')
-            rec.capacity = _get('Capacity')
-            rec.floors = _get('Number of Floors')
-            raw_speed = _get('Speed')
-            rec.speed = float(raw_speed) if raw_speed else 0.0
-
-    # ── ORM overrides ──────────────────────────────────────────────────────────
+            rec.lift_name = get_val('Lift Company') or ""
+            rec.floors = get_val('Number of Floors') or ""
+            rec.capacity = get_val('Capacity') or ""
+            rec.lift_type = get_val('Lift Type') or ""
+        # ── ORM overrides ──────────────────────────────────────────────────────────
 
     @api.model_create_multi
     def create(self, vals_list):
